@@ -6,21 +6,28 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
+    , compressWindow(new CompressWindow(this))
+    , extractWindow(new ExtractWindow(this))
 {
     ui->setupUi(this);
-
     QSize iconSize = QSize(fontMetrics().height(), fontMetrics().height());
     ui->buttonCompress->setIconSize(iconSize);
     ui->buttonExtract->setIconSize(iconSize);
-    extractWindow = new ExtractWindow(this);
-    compressWindow = new CompressWindow(this);
+
+    ui->mainToolBar->addAction(ui->actionCompress);
+    connect(ui->actionCompress, &QAction::triggered, this, &MainWindow::Compress);
+    connect(ui->buttonCompress, &QPushButton::pressed, this, &MainWindow::Compress);
+
+    ui->mainToolBar->addAction(ui->actionExtract);
+    connect(ui->actionExtract, &QAction::triggered, this, &MainWindow::Extract);
+    connect(ui->buttonExtract, &QPushButton::pressed, this, &MainWindow::Extract);
 }
 
 MainWindow::~MainWindow()
 {
-    delete ui;
-    delete extractWindow;
     delete compressWindow;
+    delete extractWindow;
+    delete ui;
 }
 
 void MainWindow::on_actionExit_triggered()
@@ -35,36 +42,14 @@ void MainWindow::on_actionAbout_triggered()
     Ab1.exec();
 }
 
-void MainWindow::on_actionCompress_triggered()
-{
-    Compress();
-}
-
 void MainWindow::Extract()
 {
     extractWindow->show();
-    this->hide();
 }
 
 void MainWindow::Compress()
 {
     compressWindow->show();
-    this->hide();
-}
-
-void MainWindow::on_actionExtract_triggered()
-{
-    Extract();
-}
-
-void MainWindow::on_actionCompressButton_triggered()
-{
-    Compress();
-}
-
-void MainWindow::on_actionExtractButton_triggered()
-{
-    Extract();
 }
 
 void MainWindow::on_actionLicense_triggered()
@@ -73,14 +58,3 @@ void MainWindow::on_actionLicense_triggered()
     license.setModal(true);
     license.exec();
 }
-
-void MainWindow::on_buttonExtract_clicked()
-{
-    Extract();
-}
-
-void MainWindow::on_buttonCompress_clicked()
-{
-    Compress();
-}
-

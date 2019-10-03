@@ -28,7 +28,7 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = nullptr);
     void Compress();
     void Extract();
 
@@ -39,25 +39,12 @@ private slots:
 
     void on_actionAbout_triggered();
 
-    void on_actionCompress_triggered();
-
-    void on_actionExtract_triggered();
-
-    void on_actionCompressButton_triggered();
-
-    void on_actionExtractButton_triggered();
-
     void on_actionLicense_triggered();
-
-    void on_buttonExtract_clicked();
-
-    void on_buttonCompress_clicked();
 
 private:
     Ui::MainWindow *ui;
-    About *aboutwindow;
-    ExtractWindow *extractWindow;
-    CompressWindow *compressWindow;
+    CompressWindow *compressWindow = nullptr;
+    ExtractWindow *extractWindow = nullptr;
 };
 
 #endif // MAINWINDOW_H
